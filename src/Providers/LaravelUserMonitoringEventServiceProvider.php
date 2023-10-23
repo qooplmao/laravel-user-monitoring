@@ -13,28 +13,14 @@ class LaravelUserMonitoringEventServiceProvider extends EventServiceProvider
 {
     public function boot()
     {
-        $agent = new Agent();
-        $guard = config('user-monitoring.user.guard');
-        $table = config('user-monitoring.authentication_monitoring.table');
-
         // Login Event
         if (config('user-monitoring.authentication_monitoring.on_login', false)) {
-            Event::listen(function (Login $event) use ($agent, $guard, $table) {
-                DB::table($table)
-                    ->insert(
-                        $this->insertData($guard, $agent, 'login'),
-                    );
-            });
+            Event::listen(fn(Login $event) => $this->recordEvent('login'));
         }
 
         // Logout Event
         if (config('user-monitoring.authentication_monitoring.on_logout', false)) {
-            Event::listen(function (Logout $event) use ($agent, $guard, $table) {
-                DB::table($table)
-                    ->insert(
-                        $this->insertData($guard, $agent, 'logout'),
-                    );
-            });
+            Event::listen(fn(Login $event) => $this->recordEvent('logout'));
         }
     }
 
@@ -42,22 +28,24 @@ class LaravelUserMonitoringEventServiceProvider extends EventServiceProvider
      * Insert data.
      *
      * @param  string $guard
-     * @param  Agent $agent
-     * @param  string $actionType
-     * @return array
+     * @return void
      */
-    private function insertData(string $guard, Agent $agent, string $actionType): array
+    private function recordEvent(string $actionType): void
     {
-        return [
-            'user_id' => auth($guard)->id(),
-            'action_type' => $actionType,
-            'browser_name' => $agent->browser(),
-            'platform' => $agent->platform(),
-            'device' => $agent->device(),
-            'ip' => request()->ip(),
-            'page' => request()->url(),
-            'created_at' => now(),
-            'updated_at' => now(),
-        ];
+        $agent = new Agent();
+        $guard = config('user-monitoring.user.guard');
+        $table = config('user-monitoring.authentication_monitoring.table');
+
+        DB::table($table)->insert([
+            'user_id'       => auth($guard)->id(),
+            'action_type'   => $actionType,
+            'browser_name'  => $agent->browser(),
+            'platform'      => $agent->platform(),
+            'device'        => $agent->device(),
+            'ip'            => request()->ip(),
+            'page'          => request()->url(),
+            'created_at'    => now(),
+            'updated_at'    => now(),
+        ]);
     }
 }

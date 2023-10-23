@@ -71,16 +71,16 @@ trait Actionable
         $guard = config('user-monitoring.user.guard');
 
         DB::table(config('user-monitoring.action_monitoring.table'))->insert([
-            'user_id' => auth($guard)->id(),
-            'action_type' => $actionType,
-            'table_name' => $model->getTable(),
-            'browser_name' => $agent->browser(),
-            'platform' => $agent->platform(),
-            'device' => $agent->device(),
-            'ip' => request()->ip(),
-            'page' => request()->url(),
-            'created_at' => now(),
-            'updated_at' => now(),
+            'user_id'       => auth($guard)->id(),
+            'action_type'   => $actionType,
+            'table_name'    => $model->getTable(),
+            'browser_name'  => $agent->browser(),
+            'platform'      => $agent->platform(),
+            'device'        => $agent->device(),
+            'ip'            => request()->ip(),
+            'page'          => request()->url(),
+            'created_at'    => now(),
+            'updated_at'    => now(),
         ]);
     }
 }
