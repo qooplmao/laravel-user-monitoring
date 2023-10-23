@@ -63,6 +63,16 @@ return [
         ],
 
         /*
+         * You can specify routes or paths to not be monitored.
+         *
+         * This check is done using "$request->is($pattern) || $request->routeId($pattern
+         */
+        'should_skip' => [
+//            'user-monitoring/visits-monitoring',
+            'user-monitoring.*',
+        ],
+
+        /*
          * If you want to delete visit rows after some days, you can change this to 360 for example,
          * but you don't like to delete rows you can change it to 0.
          *

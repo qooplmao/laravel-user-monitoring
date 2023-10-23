@@ -19,40 +19,45 @@ class VisitMonitoringMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (config('user-monitoring.visit_monitoring.turn_on', false) === false) {
-            return $next($request);
+        if ((bool) config('user-monitoring.visit_monitoring.turn_on')) {
+            $this->recordVisit($request);
+        }
+        
+        return $next($request);
+    }
+    
+    private function recordVisit(Request $request): void
+    {
+        if ($this->shouldSkipVisit($request)) {
+            return;
         }
 
         $agent = new Agent();
         $guard = config('user-monitoring.user.guard', 'web');
-        $exceptPages = config('user-monitoring.visit_monitoring.except_pages', []);
 
-        if (empty($exceptPages) || !$this->checkIsExceptPages($request->path(), $exceptPages)) {
-            // Store visit
-            DB::table(config('user-monitoring.visit_monitoring.table'))->insert([
-                'user_id' => auth($guard)->id(),
-                'browser_name' => $agent->browser(),
-                'platform' => $agent->platform(),
-                'device' => $agent->device(),
-                'ip' => $request->ip(),
-                'page' => $request->url(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
-
-        return $next($request);
+        // Store visit
+        DB::table(config('user-monitoring.visit_monitoring.table'))->insert([
+            'user_id'       => auth($guard)->id(),
+            'browser_name'  => $agent->browser(),
+            'platform'      => $agent->platform(),
+            'device'        => $agent->device(),
+            'ip'            => $request->ip(),
+            'page'          => $request->url(),
+            'created_at'    => now(),
+            'updated_at'    => now(),
+        ]);
     }
 
     /**
-     * Check request page are exists in expect pages.
+     * Check whether the request matches any of the patterns in the should_skip list
      *
-     * @param  string $page
-     * @param  array $exceptPages
+     * @param Request $request $request
      * @return bool
      */
-    private function checkIsExceptPages(string $page, array $exceptPages)
+    private function shouldSkipVisit(Request $request): bool
     {
-        return collect($exceptPages)->contains($page);
+        $shouldSkip = config('user-monitoring.visit_monitoring.should_skip', []);
+        
+        return $request->is($shouldSkip) || $request->routeIs($shouldSkip);
     }
 }
