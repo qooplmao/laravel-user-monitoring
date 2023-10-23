@@ -10,13 +10,6 @@ class ActionMonitoring extends Model
     use HasFactory;
 
     /**
-     * Set table name.
-     *
-     * @var string
-     */
-    protected $table = 'actions_monitoring';
-
-    /**
      * Guarded columns.
      *
      * @var array
@@ -28,5 +21,10 @@ class ActionMonitoring extends Model
     public function user()
     {
         return $this->belongsTo(config('user-monitoring.user.model'), config('user-monitoring.user.foreign_key'));
+    }
+
+    public function getTable()
+    {
+        return config('user-monitoring.action_monitoring.table', 'actions_monitoring');
     }
 }

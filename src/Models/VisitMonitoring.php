@@ -10,13 +10,6 @@ class VisitMonitoring extends Model
     use HasFactory;
 
     /**
-     * Set table name.
-     *
-     * @var string
-     */
-    protected $table = 'visits_monitoring';
-
-    /**
      * Guarded columns.
      *
      * @var array
@@ -28,5 +21,10 @@ class VisitMonitoring extends Model
     public function user()
     {
         return $this->belongsTo(config('user-monitoring.user.model'), config('user-monitoring.user.foreign_key'));
+    }
+
+    public function getTable()
+    {
+        return config('user-monitoring.visit_monitoring.table', 'visits_monitoring');
     }
 }

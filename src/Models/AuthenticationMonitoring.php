@@ -10,13 +10,6 @@ class AuthenticationMonitoring extends Model
     use HasFactory;
 
     /**
-     * Set table name.
-     *
-     * @var string
-     */
-    protected $table = 'authentications_monitoring';
-
-    /**
      * Guarded columns.
      *
      * @var string[]
@@ -28,5 +21,10 @@ class AuthenticationMonitoring extends Model
     public function user()
     {
         return $this->belongsTo(config('user-monitoring.user.model'), config('user-monitoring.user.foreign_key'));
+    }
+
+    public function getTable()
+    {
+        return config('user-monitoring.authentication_monitoring.table', 'authentications_monitoring');
     }
 }
