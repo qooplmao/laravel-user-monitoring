@@ -1,6 +1,18 @@
 <?php
 
 return [
+    /**
+     * Fallback delete days.
+     *
+     * Delete records after a certain number of days.
+     * 0 will disable deletion of records.
+     * This will be used when individual monitor has "delete_days" set to null
+     *
+     * This requires the PruneUserMonitoringRecords command to be added to your task scheduling
+     * @see docs for details
+     */
+    'delete_days'   => 0,
+
     /*
      * Configurations.
      */
@@ -72,13 +84,15 @@ return [
             'user-monitoring.*',
         ],
 
-        /*
-         * If you want to delete visit rows after some days, you can change this to 360 for example,
-         * but you don't like to delete rows you can change it to 0.
+        /**
+         * Delete records after a certain number of days.
+         * 0 will disable deletion of records for this monitor.
+         * null will cause the fallback delete_days from above to be used.
          *
-         * For this feature you need Task-Scheduling => https://laravel.com/docs/10.x/scheduling
+         * This requires the PruneUserMonitoringRecords command to be added to your task scheduling
+         * @see docs for details @todo
          */
-        'delete_days' => 0,
+        'delete_days'   => null,
     ],
 
     /*
@@ -98,6 +112,16 @@ return [
         'on_read'       => true,
         'on_restore'    => false, // Release for next version :)
         'on_replicate'  => false, // Release for next version :)
+
+        /**
+         * Delete records after a certain number of days.
+         * 0 will disable deletion of records for this monitor.
+         * null will cause the fallback delete_days from above to be used.
+         *
+         * This requires the PruneUserMonitoringRecords command to be added to your task scheduling
+         * @see docs for details @todo
+         */
+        'delete_days'   => null,
     ],
 
     /*
@@ -116,5 +140,15 @@ return [
          */
         'on_login' => true,
         'on_logout' => true,
+
+        /**
+         * Delete records after a certain number of days.
+         * 0 will disable deletion of records for this monitor.
+         * null will cause the fallback delete_days from above to be used.
+         *
+         * This requires the PruneUserMonitoringRecords command to be added to your task scheduling
+         * @see docs for details @todo
+         */
+        'delete_days'   => null,
     ],
 ];
