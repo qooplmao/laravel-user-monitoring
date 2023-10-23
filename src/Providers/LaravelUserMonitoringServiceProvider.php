@@ -18,7 +18,7 @@ class LaravelUserMonitoringServiceProvider extends ServiceProvider
     public function register()
     {
         $this->loadViewsFrom(__DIR__ . '/../../resources/views/', 'laravel-user-monitoring');
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+//        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
         $this->mergeConfigFrom(__DIR__ . '/../../config/user-monitoring.php', 'user-monitoring');
         $this->commands([
             PruneUserMonitoringRecords::class,
