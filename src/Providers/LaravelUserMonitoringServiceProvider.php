@@ -17,7 +17,7 @@ class LaravelUserMonitoringServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views/', 'LaravelUserMonitoring');
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views/', 'laravel-user-monitoring');
         $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
         $this->mergeConfigFrom(__DIR__ . '/../../config/user-monitoring.php', 'user-monitoring');
         $this->commands([
@@ -79,7 +79,7 @@ class LaravelUserMonitoringServiceProvider extends ServiceProvider
     private function publishViews()
     {
         $this->publishes([
-            __DIR__ . '/../../resources/views' => resource_path('views/laravel-user-monitoring'),
+            __DIR__ . '/../../resources/views' => resource_path('views/vendor/laravel-user-monitoring'),
         ], 'laravel-user-monitoring-views');
     }
 
@@ -115,10 +115,10 @@ class LaravelUserMonitoringServiceProvider extends ServiceProvider
     private function viewComposer()
     {
         view()->composer([
-            'LaravelUserMonitoring::layouts.master',
-            'LaravelUserMonitoring::visit-monitoring.index',
-            'LaravelUserMonitoring::actions-monitoring.index',
-            'LaravelUserMonitoring::authentications-monitoring.index',
+            'laravel-user-monitoring::layouts.master',
+            'laravel-user-monitoring::visit-monitoring.index',
+            'laravel-user-monitoring::actions-monitoring.index',
+            'laravel-user-monitoring::authentications-monitoring.index',
         ], function (View $view) {
             $title = 'Laravel User Monitoring';
 

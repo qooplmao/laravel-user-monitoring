@@ -11,7 +11,7 @@ class AuthenticationMonitoringController extends BaseController
     {
         $authentications = AuthenticationMonitoring::query()->latest()->paginate();
 
-        return view('LaravelUserMonitoring::authentications-monitoring.index', compact('authentications'));
+        return view('laravel-user-monitoring::authentications-monitoring.index', compact('authentications'));
     }
 
     public function destroy(int $id)

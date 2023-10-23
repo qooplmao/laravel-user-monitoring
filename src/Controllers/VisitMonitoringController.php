@@ -11,7 +11,7 @@ class VisitMonitoringController extends BaseController
     {
         $visits = VisitMonitoring::query()->latest()->paginate();
 
-        return view('LaravelUserMonitoring::visits-monitoring.index', compact('visits'));
+        return view('laravel-user-monitoring::visits-monitoring.index', compact('visits'));
     }
 
     public function destroy(int $id)

@@ -11,7 +11,7 @@ class ActionMonitoringController extends BaseController
     {
         $actions = ActionMonitoring::query()->latest()->paginate();
 
-        return view('LaravelUserMonitoring::actions-monitoring.index', compact('actions'));
+        return view('laravel-user-monitoring::actions-monitoring.index', compact('actions'));
     }
 
     public function destroy(int $id)

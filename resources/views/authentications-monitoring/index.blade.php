@@ -1,4 +1,4 @@
-@extends('LaravelUserMonitoring::layouts.master')
+@extends('laravel-user-monitoring::layouts.master')
 
 @section('title', 'Authentication Monitoring')
 
